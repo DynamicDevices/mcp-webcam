@@ -1,0 +1,56 @@
+[package]
+name = "mcp-webcam"
+version = "0.1.0"
+edition = "2021"
+description = "MCP server for webcam image capture"
+authors = ["Andrew Lennon"]
+
+[dependencies]
+# MCP implementation
+mcpr = "0.2.3"
+
+# Async runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Image handling
+base64 = "0.22"
+image = "0.25"
+
+# Webcam access - cross-platform
+nokhwa = { version = "0.10", features = ["input-msmf", "input-avfoundation"], optional = true }
+
+# Alternative: just use HTTP for remote webcams without local camera support
+# Comment out nokhwa and uncomment this for systems without camera support
+# webcam_http_only = []
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# UUID for unique identifiers
+uuid = { version = "1.0", features = ["v4"] }
+
+# DateTime handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Async trait support
+async-trait = "0.1"
+
+# Shodan API integration
+reqwest = { version = "0.11", features = ["json", "stream"] }
+url = "2.4"
+
+# Additional utilities
+regex = "1.0"
+
+[features]
+default = ["local_cameras"]
+local_cameras = ["nokhwa"]
