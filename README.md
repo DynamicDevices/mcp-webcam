@@ -24,7 +24,7 @@ A Model Context Protocol (MCP) server implementation in Rust that provides both 
 - **Local webcam access** using `nokhwa` crate (cross-platform)
 - **Remote webcam discovery** via Shodan API integration
 - **Remote webcam access** with HTTP/MJPEG support
-- **MCP-compliant server** with stdio transport
+- **Full MCP JSON-RPC protocol implementation** with stdio transport
 - **Multiple camera support** - list and select from available cameras
 - **Image capture** with automatic JPEG encoding and base64 output
 - **Comprehensive error handling** and logging
@@ -146,8 +146,9 @@ Capture an image from a remote webcam.
 }
 ```
 
-### `list_remote_webcams`
-Lists previously discovered remote webcams (placeholder for caching functionality).
+### Note on Remote Webcam Tools
+
+⚠️ **IMPORTANT**: Remote webcam tools require a Shodan API key and should only be used to access webcams you own or have explicit permission to access. Always respect privacy laws and ethical guidelines.
 
 ## Installation
 
@@ -181,7 +182,7 @@ cargo build --release
 
 ### As MCP Server (Recommended)
 
-The server communicates via stdio, making it easy to integrate with MCP clients:
+The server implements the complete MCP JSON-RPC protocol and communicates via stdio, making it ready for integration with MCP clients:
 
 ```bash
 # Run the server
@@ -199,8 +200,11 @@ Add to your MCP client configuration (e.g., Claude Desktop):
 {
   "mcpServers": {
     "webcam": {
-      "command": "/path/to/mcp-webcam",
-      "args": []
+      "command": "/path/to/mcp-webcam/target/release/mcp-webcam",
+      "args": [],
+      "env": {
+        "SHODAN_API_KEY": "your_api_key_here"
+      }
     }
   }
 }
